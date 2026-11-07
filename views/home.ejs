@@ -1,0 +1,8 @@
+<%- include('partials', {title:'INDU ONLINE SHOPPING | Home'}) %>
+<section class="hero"><small>SMART · SIMPLE · SHOPPING</small><h1>Welcome to INDU ONLINE SHOPPING</h1><p>Browse products, add your favourites to the cart and place your order.</p></section>
+<section style="margin-top:42px"><div class="eyebrow">OUR COLLECTION</div><h2 class="section-title">Available Products</h2>
+<% if (!products.length) { %><div class="panel">No products available right now.</div><% } %>
+<div class="grid"><% products.forEach(p=>{ %><article class="card"><span class="tag"><%= p.category || 'General' %></span><h3><%= p.product_name %></h3><p class="muted"><%= p.description || 'Quality product' %></p><p class="price">₹<%= Number(p.price).toFixed(2) %></p><p class="muted">Stock available: <%= p.stock %></p>
+<% if(currentUser && currentUser.role!=='admin'){ %><form method="POST" action="/cart/add/<%= p.products_id %>" class="inline"><input type="number" name="quantity" value="1" min="1" max="<%= p.stock %>" aria-label="Quantity" <%= p.stock<1?'disabled':'' %>><button type="submit" <%= p.stock<1?'disabled':'' %>>Add to Cart</button></form><% } else if(!currentUser){ %><a class="btn" href="/login">Login to Buy</a><% } else { %><a class="btn secondary" href="/admin">Manage Product</a><% } %>
+</article><% }) %></div></section>
+<%- include('footer') %>
